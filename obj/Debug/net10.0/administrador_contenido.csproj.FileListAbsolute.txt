@@ -1,0 +1,14 @@
+C:\Users\julia\source\repos\administrador_contenido\administrador_contenido\bin\Debug\net10.0\administrador_contenido.exe
+C:\Users\julia\source\repos\administrador_contenido\administrador_contenido\bin\Debug\net10.0\administrador_contenido.deps.json
+C:\Users\julia\source\repos\administrador_contenido\administrador_contenido\bin\Debug\net10.0\administrador_contenido.runtimeconfig.json
+C:\Users\julia\source\repos\administrador_contenido\administrador_contenido\bin\Debug\net10.0\administrador_contenido.dll
+C:\Users\julia\source\repos\administrador_contenido\administrador_contenido\bin\Debug\net10.0\administrador_contenido.pdb
+C:\Users\julia\source\repos\administrador_contenido\administrador_contenido\obj\Debug\net10.0\administrador_contenido.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\julia\source\repos\administrador_contenido\administrador_contenido\obj\Debug\net10.0\administrador_contenido.AssemblyInfoInputs.cache
+C:\Users\julia\source\repos\administrador_contenido\administrador_contenido\obj\Debug\net10.0\administrador_contenido.AssemblyInfo.cs
+C:\Users\julia\source\repos\administrador_contenido\administrador_contenido\obj\Debug\net10.0\administrador_contenido.csproj.CoreCompileInputs.cache
+C:\Users\julia\source\repos\administrador_contenido\administrador_contenido\obj\Debug\net10.0\administrador_contenido.dll
+C:\Users\julia\source\repos\administrador_contenido\administrador_contenido\obj\Debug\net10.0\refint\administrador_contenido.dll
+C:\Users\julia\source\repos\administrador_contenido\administrador_contenido\obj\Debug\net10.0\administrador_contenido.pdb
+C:\Users\julia\source\repos\administrador_contenido\administrador_contenido\obj\Debug\net10.0\administrador_contenido.genruntimeconfig.cache
+C:\Users\julia\source\repos\administrador_contenido\administrador_contenido\obj\Debug\net10.0\ref\administrador_contenido.dll
