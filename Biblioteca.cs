@@ -7,7 +7,7 @@ namespace administrador_contenido
     internal class Biblioteca
     {
         private List<Usuario> usuarios;
-        private int hola;
+        
         //relacion agregacion
         public void datos(Serie a, Pelicula b)
         {
