@@ -10,28 +10,33 @@ namespace administrador_contenido
         {
             //Manu
             string cadena;
-            bool continuar=true,sesion_iniciada;
+            bool continuar = true, sesion_iniciada=false;
             Usuario usuario_activo = new Usuario();
-            while(continuar)
+            while (continuar)
             {
-                cadena=Utilidades.menu("Iniciar Secion","Crear Usuario","Salir");
-                switch(cadena)
+                cadena = Utildades.menu( new String[] { "Iniciar Secion", "Crear Usuario", "Salir" });
+                switch (cadena)
                 {
-                    case"Iniciar Secion":
+                    case "Iniciar Secion":
                     {
                         sesion_iniciada = Utildades.Iniciar_Sesion(ref usuario_activo);
                         break;
                     }
-                    case"Crear Usuario":
+                    case "Crear Usuario":
                     {
-                        //se espera codigo
+                        sesion_iniciada = Utildades.crear_usuario(ref usuario_activo);
                         break;
                     }
-                    case"Salir":
+                    case "Salir":
                     {
-                        continuar=false;
+                        continuar = false;
                         break;
                     }
+                }
+                if (sesion_iniciada)
+                {
+                    Console.WriteLine($"Se inicio secion con exito con el usuario {usuario_activo.nombre_usuario}");
+                    Console.ReadKey();
                 }
             }
             //PROBLEMA: VER COMO EVITAR LA COINCIDENCIA

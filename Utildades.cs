@@ -11,29 +11,27 @@ namespace administrador_contenido
         public static bool Iniciar_Sesion(ref Usuario usuario_activo)
         {
             string cad;
-            string[] info = new string[];
--           while(true)
+            string[] info = new string[2];
+            while (true)
             {
-                cad=Utilidades.menu("Ingresar datos","Atras");
-                switch(cad)
+                cad = Utildades.menu(new string[] { "Ingresar datos", "Atras" });
+                switch (cad)
                 {
-                    case"Ingresar datos":
+                    case "Ingresar datos":
+                    info = formulario(new string[] { "Ingrese su nombre de usuario: ", "Ingrese su contraseña: " });
+                    foreach (Usuario us in Biblioteca.usuarios)
                     {
-                        info = formulario("Ingrese su nombre de usuario: ","Ingrese su contraseña: ");
-                        foreach(Usuario us in Biblioteca.usuarios)
+                        if (us.nombre_usuario == info[0] && us.Clave_usuario == info[1])
                         {
-                            if (us.nombre_usuario==info[0] && us.Clave_usuario==info[1])
-                            {
-                                usuario_activo=us;
-                                return true;
-                            }
+                            usuario_activo = us;
+                            return true;
                         }
-                        Console.WriteLine("Contraseña o nombre de usuario incorrectos");
                     }
-                    case"Atras":
-                    {
-                        return false;
-                    }
+                    Console.WriteLine("Contraseña o nombre de usuario incorrectos");
+                    Console.ReadKey();
+                    break; // Necesario para no saltar al siguiente case
+                    case "Atras":
+                    return false;
                 }
             }
         }
@@ -41,62 +39,63 @@ namespace administrador_contenido
         {
             string cad;
             int edad_ingresada;
-            string[] info = new string[];
-            bool existe_usuario=false;
--           while(true)
+            string[] info = new string[3];
+            while (true)
             {
-                cad=Utilidades.menu("Ingresar datos","Atras");
-                switch(cad)
+                cad = Utildades.menu(new string[] { "Ingresar datos", "Atras" });
+                switch (cad)
                 {
-                    case"Ingresar datos":
+                    case "Ingresar datos":
+                    info = formulario(new string[] { "Ingrese su nombre de usuario: ", "Ingrese su edad: ", "Ingrese su contraseña: " });
+                    // Corrección: Leer de nuevo hasta que la edad sea válida
+                    while (!int.TryParse(info[1], out edad_ingresada))
                     {
-                        info = formulario("Ingrese su nombre de usuario: ","Ingrese su edad: ","Ingrese su contraseña: ");
-                        while(!int.tryParce(info[1], out edad_ingresada))
+                        Console.Write("Edad no numerica, reingrese su edad: ");
+                        info[1] = Console.ReadLine();
+                    }
+                    bool existe_usuario = false; // Reiniciamos la bandera en cada intento
+                    foreach (Usuario us in Biblioteca.usuarios)
+                    {
+                        if (us.nombre_usuario == info[0])
                         {
-                            Console.White("Edad no numerica, reingrese su edad: ");
-                            info[1]=Console.ReadLine();
-                        }
-                        foreach(Usuario us in Biblioteca.usuarios)
-                        {
-                            if (us.nombre_usuario==info[0])
-                            {
-                                Console.WriteLine("El nombre ingresado ya existe");
-                                existe_usuario=true;
-                            }
-                        }
-                        if(!existe_usuario)
-                        {
-                            Biblioteca.agregar_usuario(new Usuario(info[0],info[2].info[1]));
+                            Console.WriteLine("El nombre ingresado ya existe");
+                            Console.ReadKey();
+                            existe_usuario = true;
                         }
                     }
-                    case"Atras":
+                    if (!existe_usuario)
                     {
-                        return false;
+                        Usuario usuario_creado = new Usuario(info[0], info[2], edad_ingresada);
+                        Biblioteca.agregar_usuario(usuario_creado);
+                        usuario_activo = usuario_creado;
+                        Console.WriteLine("Usuario creado con éxito.");
+                        Console.ReadKey();
+                        return true; // Puedes retornar true o usar break; para volver al menú
                     }
+                    break;
+                    case "Atras":
+                    return false;
                 }
             }
         }
-        public static string[] formulario(string[] info,)
+        public static string[] formulario(string[] info)
         {
-            string[] resultados = new string[];
-            for (int i = 0; i < info.Length; i++)
-            {
-                Console.Write(info[i]);
-                resultados[i] = Console.ReadLine();
-            }
-            return resultados;
+        string[] resultados = new string[info.Length];
+        for (int i = 0; i < info.Length; i++)
+        {
+            Console.Write(info[i]);
+            resultados[i] = Console.ReadLine();
+        }
+        return resultados;
         }
         public static string menu(string[] opciones)
         {
-
             int indiceSeleccionado = 0;
             ConsoleKeyInfo tecla;
             Console.CursorVisible = false; // Oculta el cursor para mayor prolijidad
-
             do
             {
                 Console.Clear();
-
                 // Muestra las opciones y aplica el efecto
                 for (int i = 0; i < opciones.Length; i++)
                 {
@@ -111,14 +110,11 @@ namespace administrador_contenido
                         // Colores por defecto para las no seleccionadas
                         Console.ResetColor();
                     }
-
                     // Dibuja la línea
                     Console.WriteLine(opciones[i]);
                 }
-
                 // Captura la tecla
                 tecla = Console.ReadKey(true);
-
                 // Cambia el índice según la flecha presionada
                 if (tecla.Key == ConsoleKey.UpArrow)
                 {
@@ -130,16 +126,11 @@ namespace administrador_contenido
                     indiceSeleccionado++;
                     if (indiceSeleccionado >= opciones.Length) indiceSeleccionado = 0;
                 }
-
             } while (tecla.Key != ConsoleKey.Enter);
-
             // Restaura los colores originales de la consola
             Console.ResetColor();
-
             // Retorna la opción seleccionada
             return opciones[indiceSeleccionado];
-
-
         }
 
 

@@ -4,13 +4,17 @@ using System.Text;
 
 namespace administrador_contenido
 {
-    internal class Biblioteca
+    internal static class Biblioteca
     {
-        public static List<Usuario> usuarios { get; set; }
-        
+        private static List<Usuario> _usuarios=new List<Usuario>();
         public static void agregar_usuario(Usuario us)
         {
-            this.usuarios.add(us);
+            _usuarios.Add(us);
+        }
+        public static List<Usuario> usuarios
+        {
+            get { return _usuarios; }
+            set { _usuarios = value; }
         }
         //relacion agregacion
         public void datos(Serie a, Pelicula b)
