@@ -8,7 +8,85 @@ namespace administrador_contenido
 {
     internal class Utildades
     {
-        static string menu(string[] opciones)
+        public static bool Iniciar_Sesion(ref Usuario usuario_activo)
+        {
+            string cad;
+            string[] info = new string[];
+-           while(true)
+            {
+                cad=Utilidades.menu("Ingresar datos","Atras");
+                switch(cad)
+                {
+                    case"Ingresar datos":
+                    {
+                        info = formulario("Ingrese su nombre de usuario: ","Ingrese su contraseña: ");
+                        foreach(Usuario us in Biblioteca.usuarios)
+                        {
+                            if (us.nombre_usuario==info[0] && us.Clave_usuario==info[1])
+                            {
+                                usuario_activo=us;
+                                return true;
+                            }
+                        }
+                        Console.WriteLine("Contraseña o nombre de usuario incorrectos");
+                    }
+                    case"Atras":
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
+        public static bool crear_usuario(ref Usuario usuario_activo)
+        {
+            string cad;
+            int edad_ingresada;
+            string[] info = new string[];
+            bool existe_usuario=false;
+-           while(true)
+            {
+                cad=Utilidades.menu("Ingresar datos","Atras");
+                switch(cad)
+                {
+                    case"Ingresar datos":
+                    {
+                        info = formulario("Ingrese su nombre de usuario: ","Ingrese su edad: ","Ingrese su contraseña: ");
+                        while(!int.tryParce(info[1], out edad_ingresada))
+                        {
+                            Console.White("Edad no numerica, reingrese su edad: ");
+                            info[1]=Console.ReadLine();
+                        }
+                        foreach(Usuario us in Biblioteca.usuarios)
+                        {
+                            if (us.nombre_usuario==info[0])
+                            {
+                                Console.WriteLine("El nombre ingresado ya existe");
+                                existe_usuario=true;
+                            }
+                        }
+                        if(!existe_usuario)
+                        {
+                            Biblioteca.agregar_usuario(new Usuario(info[0],info[2].info[1]));
+                        }
+                    }
+                    case"Atras":
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
+        public static string[] formulario(string[] info,)
+        {
+            string[] resultados = new string[];
+            for (int i = 0; i < info.Length; i++)
+            {
+                Console.Write(info[i]);
+                resultados[i] = Console.ReadLine();
+            }
+            return resultados;
+        }
+        public static string menu(string[] opciones)
         {
 
             int indiceSeleccionado = 0;

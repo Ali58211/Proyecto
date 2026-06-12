@@ -6,8 +6,12 @@ namespace administrador_contenido
 {
     internal class Biblioteca
     {
-        private List<Usuario> usuarios;
+        public static List<Usuario> usuarios { get; set; }
         
+        public static void agregar_usuario(Usuario us)
+        {
+            this.usuarios.add(us);
+        }
         //relacion agregacion
         public void datos(Serie a, Pelicula b)
         {

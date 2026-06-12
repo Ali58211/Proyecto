@@ -8,6 +8,32 @@ namespace administrador_contenido
         
         static async Task Main(string[] args)
         {
+            //Manu
+            string cadena;
+            bool continuar=true,sesion_iniciada;
+            Usuario usuario_activo = new Usuario();
+            while(continuar)
+            {
+                cadena=Utilidades.menu("Iniciar Secion","Crear Usuario","Salir");
+                switch(cadena)
+                {
+                    case"Iniciar Secion":
+                    {
+                        sesion_iniciada = Utildades.Iniciar_Sesion(ref usuario_activo);
+                        break;
+                    }
+                    case"Crear Usuario":
+                    {
+                        //se espera codigo
+                        break;
+                    }
+                    case"Salir":
+                    {
+                        continuar=false;
+                        break;
+                    }
+                }
+            }
             //PROBLEMA: VER COMO EVITAR LA COINCIDENCIA
             try { 
             HttpClient client = new HttpClient();
