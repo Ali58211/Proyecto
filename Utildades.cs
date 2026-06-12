@@ -101,9 +101,8 @@ namespace administrador_contenido
                 {
                     if (i == indiceSeleccionado)
                     {
-                        // Invierte los colores para la opción seleccionada
-                        Console.BackgroundColor = ConsoleColor.White;
-                        Console.ForegroundColor = ConsoleColor.Black;
+                        // Solo cambia el color de la letra a amarillo para la opción seleccionada
+                        Console.ForegroundColor = ConsoleColor.Yellow;
                     }
                     else
                     {
