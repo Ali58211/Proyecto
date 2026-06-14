@@ -50,6 +50,11 @@ namespace administrador_contenido
         public void MostrarDatos()
         {
             Console.WriteLine($"Total de resultados: {this.total_results}\n}");
+            foreach(Pelicula pel in this.results)
+            {
+                pel.MostrarDatos();   
+                Console.WriteLine();     
+            }
         }
     }
 }
