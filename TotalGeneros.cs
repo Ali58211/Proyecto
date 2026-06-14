@@ -8,7 +8,7 @@ namespace administrador_contenido
     {
         private Genero[] _generos;
 
-        public ListaGeneros()
+        public TotalGeneros
         {
             this.generos = new Generos[] {};
         }
