@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Busqueda
+namespace administrador_contenido
 {
     internal class BuscarPelicula
     {

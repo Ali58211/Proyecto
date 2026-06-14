@@ -1,4 +1,4 @@
-﻿namespace Busqueda
+﻿namespace administrador_contenido
 {
     internal class Program
     {
