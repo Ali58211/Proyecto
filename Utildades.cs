@@ -10,14 +10,15 @@ namespace administrador_contenido
     {
         public static bool Iniciar_Sesion(ref Usuario usuario_activo)
         {
-            string cad;
+            string cadena;
             string[] info = new string[2];
             while (true)
             {
-                cad = Utildades.menu(new string[] { "Ingresar datos", "Atras" });
-                switch (cad)
+                cadena = Utildades.menu(new string[] { "Ingresar datos", "Atras" });
+                switch (cadena)
                 {
                     case "Ingresar datos":
+                    {
                     info = formulario(new string[] { "Ingrese su nombre de usuario: ", "Ingrese su contraseña: " });
                     foreach (Usuario us in Biblioteca.usuarios)
                     {
@@ -26,6 +27,7 @@ namespace administrador_contenido
                             usuario_activo = us;
                             return true;
                         }
+                    }
                     }
                     Console.WriteLine("Contraseña o nombre de usuario incorrectos");
                     Console.ReadKey();
@@ -37,20 +39,35 @@ namespace administrador_contenido
         }
         public static bool crear_usuario(ref Usuario usuario_activo)
         {
-            string cad;
-            int edad_ingresada;
+            string cadena;
+            estado_usuario estado_previo;
+            DateTime fecha_ingresada;
             string[] info = new string[3];
             while (true)
             {
-                cad = Utildades.menu(new string[] { "Ingresar datos", "Atras" });
-                switch (cad)
+                cadena = Utildades.menu(new string[] { "Ingresar datos", "Atras" });
+                switch (cadena)
                 {
                     case "Ingresar datos":
-                    info = formulario(new string[] { "Ingrese su nombre de usuario: ", "Ingrese su edad: ", "Ingrese su contraseña: " });
-                    // Corrección: Leer de nuevo hasta que la edad sea válida
-                    while (!int.TryParse(info[1], out edad_ingresada))
                     {
-                        Console.Write("Edad no numerica, reingrese su edad: ");
+                    info = formulario(new string[] { "Ingrese su nombre de usuario: ", "Ingrese su fecha de nacimiento(año/mes/dia): ", "Ingrese su contraseña: " });
+                    cadena = Utildades.menu(new string[] { "Cuenta privada", "Cuenta publica" });
+                    switch (cadena)
+                    {
+                        case "Cuenta privada":
+                        {
+                            estado_previo = estado_usuario.privado
+                            break;
+                        }
+                        case "Cuenta publica":
+                        {
+                            estado_previo = estado_usuario.publico
+                            break;
+                        }
+                    }
+                    while (!DateTime.TryParse(info[1], out fecha_ingresada))
+                    {
+                        Console.Write("Fecha no valida, reingrese su fecha de nacimiento(año/mes/dia): ");
                         info[1] = Console.ReadLine();
                     }
                     bool existe_usuario = false; // Reiniciamos la bandera en cada intento
@@ -65,7 +82,7 @@ namespace administrador_contenido
                     }
                     if (!existe_usuario)
                     {
-                        Usuario usuario_creado = new Usuario(info[0], info[2], edad_ingresada);
+                        Usuario usuario_creado = new Usuario(info[0], info[2], fecha_ingresada, estado_previo);
                         Biblioteca.agregar_usuario(usuario_creado);
                         usuario_activo = usuario_creado;
                         Console.WriteLine("Usuario creado con éxito.");
@@ -73,6 +90,7 @@ namespace administrador_contenido
                         return true; // Puedes retornar true o usar break; para volver al menú
                     }
                     break;
+                    }
                     case "Atras":
                     return false;
                 }
