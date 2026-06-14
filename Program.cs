@@ -2,75 +2,13 @@
 {
     internal class Program
     {
+        string cadena;
         static void Main(string[] args)
         {
             //BuscarSerie buscar = new BuscarSerie();
             try
             {
-                string cadena;
-                bool continuar = true, sesion_iniciada=false;
-                Usuario usuario_activo = new Usuario();
-                while (continuar)
-                {
-                    if (!sesion_iniciada)
-                    {
-                        cadena = Utildades.menu( new String[] { "Iniciar Secion", "Crear Usuario", "Salir" });
-                        switch (cadena)
-                        {
-                            case "Iniciar Secion":
-                            {
-                                sesion_iniciada = Utildades.Iniciar_Sesion(ref usuario_activo);
-                                break;
-                            }
-                            case "Crear Usuario":
-                            {
-                                sesion_iniciada = Utildades.crear_usuario(ref usuario_activo);
-                                break;
-                            }
-                            case "Salir":
-                            {
-                                continuar = false;
-                                break;
-                            }
-                        }
-                    }
-                    else 
-                    {
-                        cadena = Utildades.menu( new String[] { "Buscar pelicula","Buscar serie","Buscar usuario","Ver datos de usuario","Ver publicaciones","Adivinar pelicula","Cerrar secion" });
-                        switch (cadena)
-                        {
-                            case "Buscar pelicula":
-                            {
-                                //se espera codigo
-                                break;
-                            }
-                            case "Buscar serie":
-                            {
-                                //se espera codigo
-                                break;
-                            }
-                            case "Buscar usuario":
-                            {
-                                //se espera codigo
-                                break;
-                            }
-                            case "Ver publicaciones":
-                            {
-                                //se espera codigo
-                                break;
-                            }
-                            case "Adivinar pelicula":
-                            {
-                                //se espera codigo
-                                break;
-                            }
-                            case "Cerrar secion":
-                            {
-                                //se espera codigo
-                                break;
-                            }
-                        }
-                    }
+                Utilidades.menu_principal();
                     int op,elec;
                     Console.WriteLine("Seleccione el tipo de búsqueda:");
                     Console.WriteLine("1. Buscar serie");
