@@ -152,7 +152,6 @@ namespace administrador_contenido
 
 
 
-
         /*
         public static int Mostrar()
         {
