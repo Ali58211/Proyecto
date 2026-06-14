@@ -56,16 +56,7 @@ namespace administrador_contenido
         public int Edad
         {
             get
-            {
-                int edad = DateTime.Now.Year - FechaNacimiento.Year;
-
-                if (DateTime.Now < FechaNacimiento.AddYears(edad))
-                {
-                    edad--;
-                }
-
-                return edad;
-            }
+            { return DateTime.Now.Year - FechaNacimiento.Year; }
         }
 
         public estado_usuario estado
@@ -74,9 +65,9 @@ namespace administrador_contenido
             set { this._estado = value; }
         }
 
-        public void MostrarDatos()
+        public void MostrarDatosUsuario()
         {
-            Console.WriteLine($"Nombre de usuario: {nombre_usuario}\nClave: {Clave_usuario}\nFecha de nacimiento: {FechaNacimiento:dd/MM/yyyy}\nEdad: {Edad}\nEstado: {estado}");
+            Console.WriteLine($"Nombre de usuario: {this.nombre_usuario}\nClave: {this.Clave_usuario}\nFecha de nacimiento: {this.FechaNacimiento}\nEdad: {this.Edad}\nEstado: {this.estado}");
         }
 
         public void CambiarDatos()
