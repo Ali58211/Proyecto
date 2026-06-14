@@ -1,13 +1,19 @@
-﻿namespace administrador_contenido
+﻿using System.Text.Json;
+using System.Net.Http;
+
+namespace administrador_contenido
 {
     internal class Program
     {
         string cadena;
+        HttpClient client = new HttpClient();
+        string apiKey = "f6ea4d5e46440ed50e6316844f6b6f6d";
         static void Main(string[] args)
         {
             //BuscarSerie buscar = new BuscarSerie();
             try
             {
+                Utilidades.DescargarGeneros();
                 Utilidades.menu_principal();
                     int op,elec;
                     Console.WriteLine("Seleccione el tipo de búsqueda:");

@@ -113,7 +113,15 @@ namespace administrador_contenido
                 {
                     Console.WriteLine("Apta para todo público");
                 }
-                Console.WriteLine($"");
+                Console.Write("Géneros: ");
+                foreach(int idGenero in this.genre_ids)
+                {
+                    if(ListaGeneros.ContainsKey(idGenero))
+                    {
+                        Console.Write($"{ListaGeneros[idGenero]} ");
+                    }
+                }
+                Console.WriteLine($"Calificación promedio: {this.vote_average}\nVotos totales: {this.vote_count}\nIndice de popularidad: {this.popularity}\nSinopsis: {this.overview}");
             }
     }
 }

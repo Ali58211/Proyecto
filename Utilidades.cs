@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.Json;
+using System.Net.Http;
 
 namespace administrador_contenido
 {
@@ -214,7 +215,17 @@ namespace administrador_contenido
                         }
                     }
         }
-
+        public static void DescargarGeneros()
+        {
+            string url = $"https://api.themoviedb.org/3/genre/movie/list?api_key={apiKey}&language=es-ES";
+            string json = await cliente.GetStringAsync(url);
+            TotalGeneros respuestaGeneros = JsonSerializer.Deserialize<TotalGeneros>(json);
+            Dictionary<int, string> ListaGeneros = new();
+            foreach (Genero gen in respuestaGeneros.generos)
+            {
+                ListaGeneros.Add(Genero.id, Genero.name);
+            }
+        }
 
         /*
         public static int Mostrar()
