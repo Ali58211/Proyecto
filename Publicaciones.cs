@@ -20,13 +20,15 @@ namespace administrador_contenido
             this.texto_publicacion = string.Empty;
         }
 
-        public Usuario(Usuario us, string con, string text)
+        public void Usuario(Usuario us, string con, string text)
         {
             this.usuario_publicacion = us;
             this.contenido_publicacion = con;
             this.fecha_publicacion = DateTime.Now;
             this.texto_publicacion = text;
         }
+
+
 
         public Usuario usuario_publicacion
         {
@@ -55,6 +57,7 @@ namespace administrador_contenido
         public void MostrarDatosPublicacion()
         {
             Console.WriteLine($"Nombre de usuario de la publicacion: {this.usuario_publicacion}\nContenido al que referencia: {this.contenido_publicacion}\nFecha de publicacion: {this.fecha_publicacion}\n{this.texto_publicacion}");
-            if
+
         }
     }
+}
