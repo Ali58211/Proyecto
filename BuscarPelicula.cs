@@ -11,7 +11,7 @@ namespace administrador_contenido
   
         public static void BuscarPorTitulo(List<Pelicula> peliculas, string titulo)
         {
-            foreach (Pelicula pelicula in peliculas)
+            foreach (Pelicula p in peliculas)
             {
                 if (pelicula.title.ToLower().Contains(titulo.ToLower()))
                 {
@@ -25,7 +25,7 @@ namespace administrador_contenido
 
         public static void BuscarPorFecha(List<Pelicula> peliculas, DateTime fecha)
         {
-            foreach (Pelicula pelicula in peliculas)
+            foreach (Pelicula p in peliculas)
             {
                 if (pelicula.release_date.Date == fecha.Date)
                 {
