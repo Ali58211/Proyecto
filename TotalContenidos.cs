@@ -4,22 +4,22 @@ using System.Text;
 
 namespace administrador_contenido
 {
-    internal class TotalPeliculas
+    internal class TotalContenidos
     {
         private int _page; //pagina actual
-        private List<Pelicula> _results; //pelicuas
+        private List<Contenido> _results; //pelicuas
         private int _total_pages; //total de paginas
         private int _total_results; //total de peliculas
 
         public TotalPeliculas()
         {
             this.page = 0;
-            this.results = new List<Pelicula>();
+            this.results = new List<Contenido>();
             this.total_pages = 0;
             this.total_results = 0;
         }
 
-        public TotalPeliculas(int pag, List<Pelicula> res, int totpag, int totres)
+        public TotalPeliculas(int pag, List<Contenido> res, int totpag, int totres)
         {
             this.page = pag;
             this.results = res;
@@ -32,7 +32,7 @@ namespace administrador_contenido
             get { return this._page; }
             set { this._page = value; }
         }
-        public List<Pelicula> results
+        public List<Contenido> results
         {
             get { return this._results; }
             set { this._results = value; }
@@ -50,9 +50,9 @@ namespace administrador_contenido
         public void MostrarDatos()
         {
             Console.WriteLine($"Total de resultados: {this.total_results}\n}");
-            foreach(Pelicula pel in this.results)
+            foreach(Contenido con in this.results)
             {
-                pel.MostrarDatos();   
+                con.MostrarDatos();   
                 Console.WriteLine();     
             }
         }

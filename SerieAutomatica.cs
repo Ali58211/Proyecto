@@ -6,7 +6,7 @@ namespace administrador_contenido
 {
     internal class SerieAutomatica
     {
-
+        //detalles de la serie, se guarda para un posible uso posterior
         public class Rootobject
         {
             public bool adult { get; set; }
@@ -117,6 +117,6 @@ namespace administrador_contenido
             public string iso_639_1 { get; set; }
             public string name { get; set; }
         }
-
+        */
     }
 }
