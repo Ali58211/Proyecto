@@ -6,9 +6,21 @@ namespace administrador_contenido
 {
     internal interface IAccion
     {
-        public void Play();
+        public class Play
+        { 
+            void Play();
+        }
+         public class Pause
+        { 
         public void Pause();
+        }
+        
+        public class Siguiente
+        {
         public void EpAnterior();
         public void EpSiguiente();
+        }
+
+    
     }
 }
