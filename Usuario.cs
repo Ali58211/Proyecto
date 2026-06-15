@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json;
 
 namespace administrador_contenido
 {
@@ -13,11 +14,16 @@ namespace administrador_contenido
 
     internal class Usuario
     {
-        private string? _nombre_Usuario;
-        private string? _clave_usuario;
+        private string _nombre_Usuario;
+        private string _clave_usuario;
         private DateTime _fechaNacimiento;
         private estado_usuario _estado;
 
+        /*Usuario nuevoUsuario = new Usuario(nombre, clave, fechaNac, estado);
+        
+        string convertidoAJson = JsonSerializer.Serialize(bib, new JsonSerializerOptions { WriteIndented = true });
+        File.WriteAllText(path, convertidoAJson);
+        */
         public Usuario()
         {
             this.Clave_usuario = string.Empty;
@@ -70,10 +76,10 @@ namespace administrador_contenido
             Console.WriteLine($"Nombre de usuario: {this.nombre_usuario}\nClave: {this.Clave_usuario}\nFecha de nacimiento: {this.FechaNacimiento}\nEdad: {this.Edad}\nEstado: {this.estado}");
         }
 
-        public void CambiarDatos()
+        public async Task CambiarDatos()
         {
             //se cambiara proximamente
-            Program.cadena = Utildades.menu( new String[] { "Buscar pelicula","Buscar serie","Buscar usuario","Ver datos de usuario","Ver publicaciones","Adivinar pelicula","Cerrar secion" });
+            Program.cadena = Utilidades.menu( new String[] { "Buscar pelicula","Buscar serie","Buscar usuario","Ver datos de usuario","Ver publicaciones","Adivinar pelicula","Cerrar secion" });
             switch (Program.cadena)
             {
                 case "Buscar pelicula":
@@ -87,7 +93,8 @@ namespace administrador_contenido
                     break;
                 }
                 case "Buscar usuario":
-                {
+                {   
+
                     //se espera codigo
                     break;
                 }
@@ -97,9 +104,9 @@ namespace administrador_contenido
                     break;
                 }
                 case "Adivinar pelicula":
-                {    
-                    await AhorcadoPeliculas.Jugar();
-                    break;
+                {
+                        await AhorcadoPeliculas.Jugar();
+                        break;
                 }
                 case "Cerrar secion":
                 {
