@@ -206,8 +206,8 @@ namespace administrador_contenido
                             }
                             case "Adivinar pelicula":
                             {
-                                //se espera codigo
-                                break;
+                              await AhorcadoPeliculas.Jugar();
+                              break;
                             }
                             case "Cerrar secion":
                             {
