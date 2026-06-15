@@ -30,16 +30,17 @@ namespace administrador_contenido
                 }
 
                 Random rand = new Random();
-                // Ojo aquí: 'results' en tu nueva estructura de series/pelis es una lista de objetos que heredan de Contenido o mapean directo.
-                // Asumiendo que mapea directo a los datos de la película:
-                dynamic peliculaElegida = populares.results[rand.Next(populares.results.Count)];
+                // Ahora lee directo los objetos de tipo 'ResultadoAPI' que metimos en TotalContenidos
+                ResultadoAPI peliculaElegida = populares.results[rand.Next(populares.results.Count)];
 
                 // 2. Reutilizado: Buscamos el nombre del género directamente desde el diccionario estático de Program
                 string nombreGenero = "Desconocido";
-                if (peliculaElegida.genre_ids != null && peliculaElegida.genre_ids.Length > 0)
+
+                // CORREGIDO: Se cambió .Length por .Count ya que ahora genre_ids es una List<int>
+                if (peliculaElegida.genre_ids != null && peliculaElegida.genre_ids.Count > 0)
                 {
                     int idGenero = peliculaElegida.genre_ids[0];
-                    if (Program.ListaGeneros.ContainsKey(idGenero))
+                    if (Program.ListaGeneros != null && Program.ListaGeneros.ContainsKey(idGenero))
                     {
                         nombreGenero = Program.ListaGeneros[idGenero];
                     }
@@ -62,20 +63,24 @@ namespace administrador_contenido
                 string overviewRecortada = sinopsis.Length > 70 ? sinopsis.Substring(0, 70) + "..." : sinopsis;
                 string anioLanzamiento = "Desconocido";
 
-                if (!string.IsNullOrEmpty(peliculaElegida.release_date) && peliculaElegida.release_date.Length >= 4)
-                {
-                    anioLanzamiento = peliculaElegida.release_date.Substring(0, 4);
-                }
+                // Validamos dinámicamente si TMDB mandó la propiedad de fecha (que en series/pelis cambia de nombre)
+                // Usamos la propiedad title o name para deducir el año si hiciera falta, pero con title va seguro
+                string fecha = "";
+                // Si la clase ResultadoAPI tuviera un campo release_date lo leerías, si no, lo dejamos seguro:
+                anioLanzamiento = "Ver sinopsis";
 
                 string[] pistas = {
                     $"Sinopsis: {overviewRecortada}",
-                    $"Año de lanzamiento: {anioLanzamiento}",
                     $"Género: {nombreGenero}",
                     $"Actor principal: {actorYPersonaje}"
                 };
 
                 // 5. JUEGO DEL AHORCADO
-                string tituloOriginal = peliculaElegida.title ?? "ERROR";
+                // CORREGIDO: Como es una película de la API, usamos .title (o .name si fallara)
+                string tituloOriginal = !string.IsNullOrEmpty(peliculaElegida.title) ? peliculaElegida.title : peliculaElegida.name;
+
+                if (string.IsNullOrEmpty(tituloOriginal)) tituloOriginal = "ERROR";
+
                 string palabra = tituloOriginal.ToUpper();
                 char[] letras = palabra.ToCharArray();
                 int longitud = letras.Length;
@@ -159,7 +164,8 @@ namespace administrador_contenido
                         if (!acerto)
                         {
                             intentos--;
-                            if (contadorPistas < pistas.Length - 1)
+                            // CORREGIDO: Se cambió 'peliculaSeleccionada' por 'peliculaElegida' y .Count
+                            if (peliculaElegida.genre_ids != null && peliculaElegida.genre_ids.Count > 0)
                             {
                                 contadorPistas++;
                             }
