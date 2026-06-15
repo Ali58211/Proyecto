@@ -1,16 +1,16 @@
 using System.Text.Json;
-using static Quiz2.Pelicula;
 
 namespace Quiz2
 {
-    internal class Program
+    internal static class AhorcadoPeliculas
     {
-        static async Task Main(string[] args)
+        private static string apiKey = "f6ea4d5e46440ed50e6316844f6b6f6d";
+
+        public static async Task Jugar()
         {
             HttpClient client = new HttpClient();
-            string apiKey = "f6ea4d5e46440ed50e6316844f6b6f6d";
 
-            // 1.Traer una peli popular al azar
+            // 1. Traer una peli popular al azar
             string urlPopulares = $"https://api.themoviedb.org/3/movie/popular?api_key={apiKey}&language=es-AR&with_original_language=en";
             string jsonPopulares = await client.GetStringAsync(urlPopulares);
             BusquedaPelicula populares = JsonSerializer.Deserialize<BusquedaPelicula>(jsonPopulares);
@@ -19,7 +19,7 @@ namespace Quiz2
             int indice = rand.Next(populares.results.Count);
             ResultadoPelicula peliculaElegida = populares.results[indice];
 
-            // 2.Traer lista de generos
+            // 2. Traer lista de generos
             string urlGeneros = $"https://api.themoviedb.org/3/genre/movie/list?api_key={apiKey}&language=es-AR";
             string jsonGeneros = await client.GetStringAsync(urlGeneros);
             ListaGeneros generos = JsonSerializer.Deserialize<ListaGeneros>(jsonGeneros);
@@ -33,7 +33,7 @@ namespace Quiz2
                 if (g != null) nombreGenero = g.name;
             }
 
-            // 3.Traer actor principal
+            // 3. Traer actor principal
             string urlCreditos = $"https://api.themoviedb.org/3/movie/{peliculaElegida.id}/credits?api_key={apiKey}&language=es-AR";
             string jsonCreditos = await client.GetStringAsync(urlCreditos);
             Creditos creditos = JsonSerializer.Deserialize<Creditos>(jsonCreditos);
@@ -56,7 +56,7 @@ namespace Quiz2
                 $"actor: {actorYPersonaje}"
             };
 
-            //5 jUEGO DEL AHORCADO
+            // 5. JUEGO DEL AHORCADO
             string palabra = peliculaElegida.title.ToUpper();
             char[] letras = palabra.ToCharArray();
             int longitud = letras.Length;
@@ -65,13 +65,12 @@ namespace Quiz2
             int contador = 0;
             bool juegoActivo = true;
 
-            Console.WriteLine("ahorcado PELIS\n");
+            Console.WriteLine("AHORCADO DE PELICULAS\n");
 
             do
             {
                 int letrasEncontradas = 0;
 
-                //mostrar progreso
                 for (int h = 0; h < longitud; h++)
                 {
                     if (adivinadas[h] == 1)
@@ -82,7 +81,7 @@ namespace Quiz2
                     else if (letras[h] == ' ')
                     {
                         Console.Write("   ");
-                        letrasEncontradas++; //los espacios no cuentan como letra a adivinar
+                        letrasEncontradas++;
                     }
                     else
                     {
@@ -94,7 +93,7 @@ namespace Quiz2
                 if (letrasEncontradas == longitud)
                 {
                     juegoActivo = false;
-                    Console.WriteLine($"felicitaciones la peli era: {peliculaElegida.title}");
+                    Console.WriteLine($"Felicitaciones, la pelicula era: {peliculaElegida.title}");
                 }
                 else
                 {
@@ -133,6 +132,9 @@ namespace Quiz2
                 }
 
             } while (juegoActivo);
+
+            Console.WriteLine("\nPresione una tecla para volver al menu...");
+            Console.ReadKey();
         }
     }
 }
