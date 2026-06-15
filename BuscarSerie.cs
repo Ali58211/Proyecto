@@ -39,4 +39,15 @@ namespace administrador_contenido
             throw new NotImplementedException();
         }
     }
+    public class RespuestaSerie
+    {
+        public List<Serie> results { get; set; }
+    }
+
+    public class Serie
+    {
+        public string name { get; set; }
+        public string overview { get; set; }
+        public string first_air_date { get; set; }
+    }
 }
