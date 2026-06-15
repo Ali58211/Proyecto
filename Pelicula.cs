@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -42,9 +42,10 @@ namespace administrador_contenido
             set { this._release_date = value; }
         }
 
-        public void MostrarDatos()
+
+        public override void MostrarDatos()
         {
-            Console.Write($"Nombre de la pelicula: {this.title} ({this.original_title})\nFecha de estreno: {this.releace_date}\nClasificacion: ");
+            Console.Write($"Nombre de la pelicula: {this.title} ({this.original_title})\nFecha de estreno: {this.release_date}\nClasificacion: ");
             if(this.adult)
             {
                 Console.WriteLine("Solo para adultos");
@@ -56,9 +57,9 @@ namespace administrador_contenido
             Console.Write($"Idioma original: {this.original_language}\nGéneros: ");
             foreach(int idGenero in this.genre_ids)
             {
-                if(ListaGeneros.ContainsKey(idGenero))
+                if(Program.ListaGeneros.ContainsKey(idGenero))
                 {
-                    Console.Write($"{ListaGeneros[idGenero]} ");
+                    Console.Write($"{Program.ListaGeneros[idGenero]} ");
                 }
             }
             Console.WriteLine($"Calificación promedio: {this.vote_average}\nVotos totales: {this.vote_count}\nIndice de popularidad: {this.popularity}\nSinopsis: {this.overview}");
