@@ -39,7 +39,7 @@ namespace administrador_contenido
                         }
                         case 2:
                         {
-                            Console.WriteLine("holaPEPE");
+                            BuscarSerie Serie = new BuscarPelicula();
                             break;
                         }
                     }
