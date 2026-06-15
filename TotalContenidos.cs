@@ -47,12 +47,19 @@ namespace administrador_contenido
             get { return this._total_results; }
             set { this._total_results = value; }
         }
-        public void MostrarDatos()
+        public void MostrarDatos(Usuario usuario_activo)
         {
             foreach(Contenido con in this.results)
             {
-                con.MostrarDatos();   
-                Console.WriteLine();     
+                if(usuario_activo.Edad<18 && con.adult==true)
+                {
+                    Console.WriteLine("Contenido adulto restringido");
+                }
+                else 
+                {
+                    con.MostrarDatos();   
+                    Console.WriteLine(); 
+                }    
             }
         }
     }

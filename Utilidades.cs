@@ -183,19 +183,20 @@ namespace administrador_contenido
                         {
                             case "Buscar pelicula":
                             {
-                                Utilidades.Buscar_contenido("pelicula");
+                                Utilidades.Buscar_contenido("pelicula", usuario_activo );
                                 Program.continuar = true;
                                 break;
                             }
                             case "Buscar serie":
                             {
-                                Utilidades.Buscar_contenido("serie");
+                                Utilidades.Buscar_contenido("serie", usuario_activo);
                                 Program.continuar = true;
                                 break;
                             }
                             case "Buscar usuario":
                             {
-                                //se espera codigo
+                                Utilidades.Buscar_usuario();
+                                Program.continuar = true;
                                 break;
                             }
                             case "Ver publicaciones":
@@ -230,7 +231,7 @@ namespace administrador_contenido
             }
         }
         
-        public static async Task Buscar_contenido(string tipo)
+        public static async Task Buscar_contenido(string tipo, Usuario usuario_activo)
         {
             string camb_pag;
             bool filtro;
@@ -274,7 +275,7 @@ namespace administrador_contenido
                     int pagina = resultados.page;
                     while(Program.continuar)
                     {
-                        respuesta.MostrarDator();
+                        respuesta.MostrarDator(usuario_activo);
                         camb_pag = Utilidades.menu( new String[] { "Pagina anterio","Pagina siguiente","Atras" });
                         switch (camb_pag)
                         {
@@ -331,36 +332,36 @@ namespace administrador_contenido
                 }
                 else
                 {
-                    respuesta.MostrarDator();
+                    respuesta.MostrarDator(usuario_activo);
                     camb_pag = Utilidades.menu( new String[] { "Atras" });
                 }
             }
         }
-        /*
-        public static int Mostrar()
+        public static void Buscar_usuario()
         {
-
-
-
-            
-            int opcion;
-            string cadena;
-            Console.WriteLine("1-Buscar pelicula");
-            Console.WriteLine("2-Buscar serie");
-            Console.WriteLine("3-Salir");
-
-            cadena = Console.ReadLine();
-
-            while (!int.TryParse(cadena, out opcion))
+            Program.info = new string[1];
+            while(Program.continuar)
             {
-                Console.WriteLine("reingrese opcion: ");
-                cadena = Console.ReadLine();
+                bool usuario_enc = false;
+                Program.info = Utilidades.formulario( new String[] { $"Ingrese el nombre del usuario que desea buscar: " });
+                foreach (Usuario us in Biblioteca.usuarios)
+                {
+                    if(us.nombre_usuario == Program.info[0] && us.estado == estado_usuario.publico)
+                    {
+                        usuario_enc = true;
+                        us.MostrarDatosUsuario();
+                    }
+                    if(usuario_enc == false)
+                    {
+                        Console.WriteLine("No se encontro ningun usuario");
+                    }
+                }
+                Program.cadena = Utilidades.menu( new String[] { "Atras" });
+                if(Program.cadena == "Atras")
+                {
+                    Program.continuar = false;
+                }
             }
-
-            return opcion;
         }
-
-        */
-
     }
 }
