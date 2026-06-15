@@ -11,11 +11,11 @@ namespace administrador_contenido
     {
         public static bool Iniciar_Sesion(ref Usuario usuario_activo)
         {
-            string[] info = new string[2];
+            Program.info = new string[2];
             while (true)
             {
-                cadena = Utilidades.menu(new string[] { "Ingresar datos", "Atras" });
-                switch (cadena)
+                Program.cadena = Utilidades.menu(new string[] { "Ingresar datos", "Atras" });
+                switch (Program.cadena)
                 {
                     case "Ingresar datos":
                     {
@@ -41,17 +41,17 @@ namespace administrador_contenido
         {
             estado_usuario estado_previo;
             DateTime fecha_ingresada;
-            string[] info = new string[3];
+            Program.info = new string[3];
             while (true)
             {
-                cadena = Utilidades.menu(new string[] { "Ingresar datos", "Atras" });
-                switch (cadena)
+                Program.cadena = Utilidades.menu(new string[] { "Ingresar datos", "Atras" });
+                switch (Program.cadena)
                 {
                     case "Ingresar datos":
                     {
-                    info = formulario(new string[] { "Ingrese su nombre de usuario: ", "Ingrese su fecha de nacimiento(año/mes/dia): ", "Ingrese su contraseña: " });
-                    cadena = Utilidades.menu(new string[] { "Cuenta privada", "Cuenta publica" });
-                    switch (cadena)
+                    Program.info = formulario(new string[] { "Ingrese su nombre de usuario: ", "Ingrese su fecha de nacimiento(año/mes/dia): ", "Ingrese su contraseña: " });
+                    Program.cadena = Utilidades.menu(new string[] { "Cuenta privada", "Cuenta publica" });
+                    switch (Program.cadena)
                     {
                         case "Cuenta privada":
                         {
@@ -64,15 +64,15 @@ namespace administrador_contenido
                             break;
                         }
                     }
-                    while (!DateTime.TryParse(info[1], out fecha_ingresada))
+                    while (!DateTime.TryParse(Program.info[1], out fecha_ingresada))
                     {
                         Console.Write("Fecha no valida, reingrese su fecha de nacimiento(año/mes/dia): ");
-                        info[1] = Console.ReadLine();
+                        Program.info[1] = Console.ReadLine();
                     }
                     bool existe_usuario = false; // Reiniciamos la bandera en cada intento
                     foreach (Usuario us in Biblioteca.usuarios)
                     {
-                        if (us.nombre_usuario == info[0])
+                        if (us.nombre_usuario == Program.info[0])
                         {
                             Console.WriteLine("El nombre ingresado ya existe");
                             Console.ReadKey();
@@ -81,7 +81,7 @@ namespace administrador_contenido
                     }
                     if (!existe_usuario)
                     {
-                        Usuario usuario_creado = new Usuario(info[0], info[2], fecha_ingresada, estado_previo);
+                        Usuario usuario_creado = new Usuario(Program.info[0], Program.info[2], fecha_ingresada, estado_previo);
                         Biblioteca.agregar_usuario(usuario_creado);
                         usuario_activo = usuario_creado;
                         Console.WriteLine("Usuario creado con éxito.");
@@ -150,14 +150,14 @@ namespace administrador_contenido
         }
         public static void menu_principal()
         {
-            bool continuar = true, sesion_iniciada=false;
+            bool sesion_iniciada=false;
             Usuario usuario_activo = new Usuario();
-                while (continuar)
+                while (Program.continuar)
                 {
                     if (!sesion_iniciada)
                     {
-                        cadena = Utilidades.menu( new String[] { "Iniciar Secion", "Crear Usuario", "Salir" });
-                        switch (cadena)
+                        Program.cadena = Utilidades.menu( new String[] { "Iniciar Secion", "Crear Usuario", "Salir" });
+                        switch (Program.cadena)
                         {
                             case "Iniciar Secion":
                             {
@@ -171,24 +171,26 @@ namespace administrador_contenido
                             }
                             case "Salir":
                             {
-                                continuar = false;
+                                Program.continuar = false;
                                 break;
                             }
                         }
                     }
                     else 
                     {
-                        cadena = Utilidades.menu( new String[] { "Buscar pelicula","Buscar serie","Buscar usuario","Ver datos de usuario","Ver publicaciones","Adivinar pelicula","Cerrar sesion" });
-                        switch (cadena)
+                        Program.cadena = Utilidades.menu( new String[] { "Buscar pelicula","Buscar serie","Buscar usuario","Ver datos de usuario","Ver publicaciones","Adivinar pelicula","Cerrar sesion" });
+                        switch (Program.cadena)
                         {
                             case "Buscar pelicula":
                             {
-                                //se espera codigo
+                                Utilidades.Buscar_contenido("pelicula");
+                                Program.continuar = true;
                                 break;
                             }
                             case "Buscar serie":
                             {
-                                //se espera codigo
+                                Utilidades.Buscar_contenido("serie");
+                                Program.continuar = true;
                                 break;
                             }
                             case "Buscar usuario":
@@ -215,10 +217,11 @@ namespace administrador_contenido
                         }
                     }
         }
-        public static void DescargarGeneros()
+
+        public static async Task DescargarGeneros()
         {
-            string url = $"https://api.themoviedb.org/3/genre/movie/list?api_key={apiKey}&language=es-ES";
-            string json = await cliente.GetStringAsync(url);
+            string url = $"https://api.themoviedb.org/3/genre/movie/list?api_key={Program.apiKey}&language=es-ES";
+            string json = await Program.client.GetStringAsync(url);
             TotalGeneros respuestaGeneros = JsonSerializer.Deserialize<TotalGeneros>(json);
             Dictionary<int, string> ListaGeneros = new();
             foreach (Genero gen in respuestaGeneros.generos)
@@ -226,7 +229,113 @@ namespace administrador_contenido
                 ListaGeneros.Add(Genero.id, Genero.name);
             }
         }
-
+        
+        public static async Task Buscar_contenido(string tipo)
+        {
+            string camb_pag;
+            bool filtro;
+            Program.info = new string[1];
+            while(Program.continuar)
+            {
+                Program.cadena = Utilidades.menu( new String[] { $"Buscar {tipo} solo por nombre",$"Buscar {tipo} con filtros","Atras" });
+                switch (Program.cadena)
+                {
+                    case "Buscar solo por nombre":
+                    {
+                        filtro = false
+                        break;
+                    }
+                    case "Buscar con filtros":
+                    {
+                        filtro = true
+                        break;
+                    }
+                    case "Atras":
+                    {
+                        Program.continuar = false;
+                        break;
+                    }
+                }
+                Program.info = Utilidades.formulario( new String[] { $"Ingrese el nombre de la {tipo} que desea buscar: " });
+                string url_contenido;
+                if(tipo == "pelicula")
+                {
+                    string url_contenido = $"https://api.themoviedb.org/3/search/movie?query={Program.info[0]}&language=es-ES&api_key={Program.apiKey}";
+                }
+                if(tipo == "serie")
+                {
+                    string url_contenido = $"https://api.themoviedb.org/3/search/tv?query={Program.info[0]}&language=es-ES&api_key={Program.apiKey}";
+                }
+                string json = await client.GetStringAsync(url_contenido);
+                TotalContenidos respuesta = JsonSerializer.Deserialize<TotalContenidos>(json);
+                Console.WriteLine($"Total de resultados: {respuesta.total_results}\n}");
+                if(respuesta.total_results>20)
+                {
+                    int pagina = resultados.page;
+                    while(Program.continuar)
+                    {
+                        respuesta.MostrarDator();
+                        camb_pag = Utilidades.menu( new String[] { "Pagina anterio","Pagina siguiente","Atras" });
+                        switch (camb_pag)
+                        {
+                            case "Pagina anterio":
+                            {
+                                if(pagina == 1)
+                                {
+                                    pagina = respuesta.total_pages;
+                                }
+                                else 
+                                {
+                                    pagina--;
+                                }
+                                if(tipo == "pelicula")
+                                {
+                                    string url_contenido = $"https://api.themoviedb.org/3/search/movie?query={Program.info[0]}&language=es-ES&page={pagina}&api_key={Program.apiKey}";;
+                                }
+                                if(tipo == "serie")
+                                {
+                                    string url_contenido = $"https://api.themoviedb.org/3/search/tv?query={Program.info[0]}&language=es-ES&page={pagina}&api_key={Program.apiKey}";;
+                                }
+                                string json = await client.GetStringAsync(url_contenido);
+                                TotalContenidos respuesta = JsonSerializer.Deserialize<TotalContenidos>(json);
+                            }
+                            case "Pagina siguiente":
+                            {
+                                if(pagina == respuesta.total_pages)
+                                {
+                                    pagina = 1;
+                                }
+                                else 
+                                {
+                                    pagina++;
+                                }
+                                if(tipo == "pelicula")
+                                {
+                                    string url_contenido = $"https://api.themoviedb.org/3/search/movie?query={Program.info[0]}&language=es-ES&page={pagina}&api_key={Program.apiKey}";;
+                                }
+                                if(tipo == "serie")
+                                {
+                                    string url_contenido = $"https://api.themoviedb.org/3/search/tv?query={Program.info[0]}&language=es-ES&page={pagina}&api_key={Program.apiKey}";;
+                                }
+                                string json = await client.GetStringAsync(url_contenido);
+                                TotalContenidos respuesta = JsonSerializer.Deserialize<TotalContenidos>(json);
+                            }
+                            case "Atras":
+                            {
+                                Program.continuar = false;
+                                break;
+                            }
+                        }
+                    }
+                    Program.continuar = true;
+                }
+                else
+                {
+                    respuesta.MostrarDator();
+                    camb_pag = Utilidades.menu( new String[] { "Atras" });
+                }
+            }
+        }
         /*
         public static int Mostrar()
         {

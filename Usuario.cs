@@ -73,9 +73,8 @@ namespace administrador_contenido
         public void CambiarDatos()
         {
             //se cambiara proximamente
-            String cadena;
-            cadena = Utildades.menu( new String[] { "Buscar pelicula","Buscar serie","Buscar usuario","Ver datos de usuario","Ver publicaciones","Adivinar pelicula","Cerrar secion" });
-            switch (cadena)
+            Program.cadena = Utildades.menu( new String[] { "Buscar pelicula","Buscar serie","Buscar usuario","Ver datos de usuario","Ver publicaciones","Adivinar pelicula","Cerrar secion" });
+            switch (Program.cadena)
             {
                 case "Buscar pelicula":
                 {
