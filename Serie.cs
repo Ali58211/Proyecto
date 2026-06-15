@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -65,9 +65,9 @@ namespace administrador_contenido
       Console.Write($"Idioma original: {this.original_language}\nGéneros: ");
       foreach(int idGenero in this.genre_ids)
       {
-        if(ListaGeneros.ContainsKey(idGenero))
+        if(Program.ListaGeneros.ContainsKey(idGenero))
         {
-          Console.Write($"{ListaGeneros[idGenero]} ");
+          Console.Write($"{Program.ListaGeneros[idGenero]} ");
         }
       }
       Console.WriteLine($"Calificación promedio: {this.vote_average}\nVotos totales: {this.vote_count}\nIndice de popularidad: {this.popularity}\nSinopsis: {this.overview}");
