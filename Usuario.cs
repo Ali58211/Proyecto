@@ -97,8 +97,8 @@ namespace administrador_contenido
                     break;
                 }
                 case "Adivinar pelicula":
-                {
-                    //se espera codigo
+                {    
+                    await AhorcadoPeliculas.Jugar();
                     break;
                 }
                 case "Cerrar secion":
