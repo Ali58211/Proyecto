@@ -8,12 +8,12 @@ namespace administrador_contenido
     {
         private Genero[] _generos;
 
-        public TotalGeneros
+        public TotalGeneros()
         {
-            this.generos = new Generos[] {};
+            this.genero = new Genero[] {};
         }
 
-        public Genero[] generos
+        public Genero[] genero
         {
             get { return this._generos; }
             set { this._generos = value; }
