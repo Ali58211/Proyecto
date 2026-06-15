@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -11,7 +11,7 @@ namespace administrador_contenido
         private int _total_pages; //total de paginas
         private int _total_results; //total de peliculas
 
-        public TotalPeliculas()
+        public TotalContenidos()
         {
             this.page = 0;
             this.results = new List<Contenido>();
@@ -19,7 +19,7 @@ namespace administrador_contenido
             this.total_results = 0;
         }
 
-        public TotalPeliculas(int pag, List<Contenido> res, int totpag, int totres)
+        public TotalContenidos(int pag, List<Contenido> res, int totpag, int totres)
         {
             this.page = pag;
             this.results = res;
