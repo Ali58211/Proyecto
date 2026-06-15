@@ -1,0 +1,12 @@
+{
+ "usuarios": [
+  {
+    "nombre_usuario": "julius",
+    "Clave_usuario": "kiara",
+    "FechaNacimiento": "2002-10-02T00:00:00",
+    "Edad": 24,
+    "estado": 1
+  }
+],
+"publicaciones": []
+}
