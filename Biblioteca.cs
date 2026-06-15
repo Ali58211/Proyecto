@@ -1,25 +1,41 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace administrador_contenido
 {
     internal class Biblioteca
     {
-        private static List<Usuario> _usuarios=new List<Usuario>();
-        public List<Publicacion> publicaciones { get; set; } = new List<Publicacion>();
+        // Atributos privados encapsulados (Pauta N° 3)
+        private List<Usuario> _usuarios;
+        private List<Publicacion> _publicaciones;
 
-        public static void agregar_usuario(Usuario us)
+        // Constructor: Inicializa las colecciones en memoria RAM (Pauta N° 4)
+        public Biblioteca()
         {
-            _usuarios.Add(us);
+            this._usuarios = new List<Usuario>();
+            this._publicaciones = new List<Publicacion>();
         }
-        public static List<Usuario> usuarios
+
+        // Propiedades públicas con métodos de acceso obligatorios para el Serializer
+        public List<Usuario> usuarios
         {
-            get { return _usuarios; }
-            set { _usuarios = value; }
+            get { return this._usuarios; }
+            set { this._usuarios = value; }
         }
-       
 
+        public List<Publicacion> publicaciones
+        {
+            get { return this._publicaciones; }
+            set { this._publicaciones = value; }
+        }
 
+        // Método de instancia para añadir elementos de forma controlada
+        public void agregar_usuario(Usuario us)
+        {
+            if (us != null)
+            {
+                this._usuarios.Add(us);
+            }
+        }
     }
 }
