@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace administrador_contenido
 {
-    internal static class Biblioteca
+    internal class Biblioteca
     {
         private static List<Usuario> _usuarios=new List<Usuario>();
         public List<Publicacion> publicaciones { get; set; } = new List<Publicacion>();
@@ -18,14 +18,8 @@ namespace administrador_contenido
             get { return _usuarios; }
             set { _usuarios = value; }
         }
-        //relacion agregacion
-        public void datos(Serie a, Pelicula b)
-        {
-        }
+       
 
-        public void buscador()
-        {
 
-        }
     }
 }
