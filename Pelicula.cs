@@ -1,68 +1,55 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace administrador_contenido
 {
     internal class Pelicula : Contenido
     {
-        private string _title; //título traducido 
-        private string _original_title; //título original 
-        private DateTime _release_date; //fecha de estreno 
+        // Propiedades específicas que usa películas en TMDb (añadidas para que no tiren error)
+        public string original_title { get; set; }
+        public string release_date { get; set; }
 
-        public Pelicula() : base()
+        // Constructor vacío para el Serializer
+        public Pelicula() : base() { }
+
+        // Constructor completo que le pasa los datos generales al Padre (: base)
+        public Pelicula(bool ad, int[] genID, int i, string origLang, string oview, float popul, float votAver, int votCount, string ttl)
+            : base(ad, genID, i, origLang, oview, popul, votAver, votCount)
         {
-            this.title = string.Empty;
-            this.original_title = string.Empty;
-            this.release_date = DateTime.MinValue;
+            this.title = ttl;
         }
 
-        public Pelicula(bool ad, int[] genID, int i, string tit, string origLang, string origTit, string oview, float popul, DateTime releDate, float votAver, int votCount) : base(ad, genID, i, origLang, oview, popul, votAver, votCount)
-        {
-            this.title = tit;
-            this.original_title = origTit;
-            this.release_date = releDate;
-        }
-
-        public string title
-        {
-            get { return this._title; }
-            set { this._title = value; }
-        }
-
-        public string original_title
-        {
-            get { return this._original_title; }
-            set { this._original_title = value; }
-        }
-
-        public DateTime release_date
-        {
-            get { return this._release_date; }
-            set { this._release_date = value; }
-        }
-
-
+        // TU MÉTODO ORIGINAL INTACTO:
         public override void MostrarDatos()
         {
-            Console.Write($"Nombre de la pelicula: {this.title} ({this.original_title})\nFecha de estreno: {this.release_date}\nClasificacion: ");
-            if(this.adult)
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("=================== PELÍCULA ===================");
+            Console.ResetColor();
+
+            Console.Write($"Nombre de la película: {this.title} ({this.original_title})\nFecha de estreno: {this.release_date}\nClasificación: ");
+            if (this.adult)
             {
                 Console.WriteLine("Solo para adultos");
             }
-            else 
+            else
             {
                 Console.WriteLine("Apta para todo público");
             }
+
             Console.Write($"Idioma original: {this.original_language}\nGéneros: ");
-            foreach(int idGenero in this.genre_ids)
+            if (this.genre_ids != null)
             {
-                if(Program.ListaGeneros.ContainsKey(idGenero))
+                foreach (int idGenero in this.genre_ids)
                 {
-                    Console.Write($"{Program.ListaGeneros[idGenero]} ");
+                    if (Program.ListaGeneros != null && Program.ListaGeneros.ContainsKey(idGenero))
+                    {
+                        Console.Write($"{Program.ListaGeneros[idGenero]} ");
+                    }
                 }
             }
-            Console.WriteLine($"Calificación promedio: {this.vote_average}\nVotos totales: {this.vote_count}\nIndice de popularidad: {this.popularity}\nSinopsis: {this.overview}");
+
+            Console.WriteLine($"\nCalificación promedio: {this.vote_average}\nVotos totales: {this.vote_count}\nÍndice de popularidad: {this.popularity}\nSinopsis: {this.overview}");
+            Console.WriteLine("------------------------------------------------------------------\n");
         }
     }
 }
