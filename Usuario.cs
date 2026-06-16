@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.Json;
@@ -18,6 +18,7 @@ namespace administrador_contenido
         private string _clave_usuario;
         private DateTime _fechaNacimiento;
         private estado_usuario _estado;
+        private List<Publicacion> _publicaciones_usuario;
 
         /*Usuario nuevoUsuario = new Usuario(nombre, clave, fechaNac, estado);
         
@@ -30,6 +31,7 @@ namespace administrador_contenido
             this.nombre_usuario = string.Empty;
             this.estado = estado_usuario.inexistente;
             this.FechaNacimiento = DateTime.Now;
+            this.publicaciones_usuario = new List<Publicacion>();
         }
 
         public Usuario(string nom, string clave, DateTime fechaNac, estado_usuario est)
@@ -38,6 +40,7 @@ namespace administrador_contenido
             this.nombre_usuario = nom;
             this.FechaNacimiento = fechaNac;
             this.estado = est;
+            this.publicaciones_usuario = new List<Publicacion>();
         }
 
         public string nombre_usuario
@@ -71,9 +74,21 @@ namespace administrador_contenido
             set { this._estado = value; }
         }
 
+        public List<Publicacion> publicaciones_usuario
+        {
+            get { return this._publicaciones_usuario; }
+            set { this._publicaciones_usuario = value; }
+        }
+
+
         public void MostrarDatosUsuario()
         {
-            Console.WriteLine($"Nombre de usuario: {this.nombre_usuario}\nClave: {this.Clave_usuario}\nFecha de nacimiento: {this.FechaNacimiento}\nEdad: {this.Edad}\nEstado: {this.estado}");
+            Console.WriteLine($"Nombre de usuario: {this.nombre_usuario}\nClave: {this.Clave_usuario}\nFecha de nacimiento: {this.FechaNacimiento}\nEdad: {this.Edad}\nEstado: {this.estado}\nPublicaciones: ");
+            foreach (Publicacion pub in this.publicaciones_usuario)
+            {
+                pub.MostrarDatosPublicacion();
+                Console.WriteLine();
+            }
         }
 
         public async Task CambiarDatos()
