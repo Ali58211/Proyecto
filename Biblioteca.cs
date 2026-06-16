@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace administrador_contenido
@@ -35,6 +35,14 @@ namespace administrador_contenido
             if (us != null)
             {
                 this._usuarios.Add(us);
+            }
+        }
+        // Método de instancia para añadir elementos de forma controlada
+        public void agregar_publicacion(Publicacion pu)
+        {
+            if (pu != null)
+            {
+                this.publicaciones.Add(us);
             }
         }
     }
