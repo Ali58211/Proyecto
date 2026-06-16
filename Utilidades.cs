@@ -427,6 +427,7 @@ namespace administrador_contenido
             Program.info = new string[1];
             while (Program.continuar)
             {
+                Console.Clear();
                 bool usuario_enc = false;
                 Program.info = Utilidades.formulario(new String[] { $"Ingrese el nombre del usuario que desea buscar: " });
 
@@ -447,8 +448,8 @@ namespace administrador_contenido
                     Console.WriteLine("No se encontro ningun usuario público con ese nombre.");
                     Console.ReadKey();
                 }
-
-                Program.cadena = Utilidades.menu(new String[] { "Atras" });
+                Console.ReadKey();
+                Program.cadena = Utilidades.menu(new String[] {"Buscar otro usuario", "Atras" });
                 if (Program.cadena == "Atras")
                 {
                     Program.continuar = false;
