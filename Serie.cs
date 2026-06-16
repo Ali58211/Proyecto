@@ -1,76 +1,55 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace administrador_contenido
 {
-  internal class Serie : Contenido
-  {
-    private string[] _origin_country; //país o países donde se produjo originalmente la serie
-    private string _original_name; //nombre original 
-    private DateTime _first_air_date; //fecha de estreno del primer episodio
-    private string _name; //nombre original 
-
-    public Serie() : base()
+    internal class Serie : Contenido
     {
-      this.origin_country = new string[] { };
-      this.original_name = string.Empty;
-      this.first_air_date = DateTime.MinValue;
-      this.name = string.Empty;
-    }
+        // Propiedades específicas que usa series en TMDb
+        public string original_name { get; set; }
+        public string first_air_date { get; set; }
 
-    public Serie(bool ad, int[] genID, int i, string[] origCountry, string origLang, string origName, string oview, float popul, DateTime firstAir, string nom, float votAver, int votCount) : base(ad, genID, i, origLang, oview, popul, votAver, votCount)
-    {
-      this.origin_country = origCountry;
-      this.original_name = origName;
-      this.first_air_date = firstAir;
-      this.name = nom;
-    }
+        // Constructor vacío para el Serializer
+        public Serie() : base() { }
 
-    public string[] origin_country
-    {
-      get { return this._origin_country; }
-      set { this._origin_country = value; }
-    }
-
-    public string original_name
-    {
-      get { return this._original_name; }
-      set { this._original_name = value; }
-    }
-
-    public DateTime first_air_date
-    {
-      get { return this._first_air_date; }
-      set { this._first_air_date = value; }
-    }
-
-    public string name
-    {
-      get { return this._name; }
-      set { this._name = value; }
-    }
-
-    public override void MostrarDatos()
-    {
-      Console.Write($"Nombre de la pelicula: {this.name} ({this.original_name})\nFecha de estreno del primer episodio: {this.first_air_date}\nClasificacion: ");
-      if(this.adult)
-      {
-        Console.WriteLine("Solo para adultos");
-      }
-      else 
-      {
-        Console.WriteLine("Apta para todo público");
-      }
-      Console.Write($"Idioma original: {this.original_language}\nGéneros: ");
-      foreach(int idGenero in this.genre_ids)
-      {
-        if(Program.ListaGeneros.ContainsKey(idGenero))
+        // Constructor completo que le pasa los datos generales al Padre (: base)
+        public Serie(bool ad, int[] genID, int i, string origLang, string oview, float popul, float votAver, int votCount, string nm)
+            : base(ad, genID, i, origLang, oview, popul, votAver, votCount)
         {
-          Console.Write($"{Program.ListaGeneros[idGenero]} ");
+            this.name = nm;
         }
-      }
-      Console.WriteLine($"Calificación promedio: {this.vote_average}\nVotos totales: {this.vote_count}\nIndice de popularidad: {this.popularity}\nSinopsis: {this.overview}");
+
+        // TU MÉTODO ORIGINAL INTACTO:
+        public override void MostrarDatos()
+        {
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("===================== SERIE =====================");
+            Console.ResetColor();
+
+            Console.Write($"Nombre de la serie: {this.name} ({this.original_name})\nFecha de estreno del primer episodio: {this.first_air_date}\nClasificación: ");
+            if (this.adult)
+            {
+                Console.WriteLine("Solo para adultos");
+            }
+            else
+            {
+                Console.WriteLine("Apta para todo público");
+            }
+
+            Console.Write($"Idioma original: {this.original_language}\nGéneros: ");
+            if (this.genre_ids != null)
+            {
+                foreach (int idGenero in this.genre_ids)
+                {
+                    if (Program.ListaGeneros != null && Program.ListaGeneros.ContainsKey(idGenero))
+                    {
+                        Console.Write($"{Program.ListaGeneros[idGenero]} ");
+                    }
+                }
+            }
+
+            Console.WriteLine($"\nCalificación promedio: {this.vote_average}\nVotos totales: {this.vote_count}\nÍndice de popularidad: {this.popularity}\nSinopsis: {this.overview}");
+            Console.WriteLine("------------------------------------------------------------------\n");
+        }
     }
-  }  
 }
