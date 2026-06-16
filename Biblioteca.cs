@@ -42,7 +42,7 @@ namespace administrador_contenido
         {
             if (pu != null)
             {
-                this.publicaciones.Add(us);
+                this.publicaciones.Add(pu);
             }
         }
     }
