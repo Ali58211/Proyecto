@@ -19,7 +19,6 @@ namespace administrador_contenido
             this.title = ttl;
         }
 
-        // TU MÉTODO ORIGINAL INTACTO:
         public override void MostrarDatos()
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
