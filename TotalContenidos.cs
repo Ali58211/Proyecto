@@ -12,8 +12,9 @@ namespace administrador_contenido
         // CORREGIDO: Ahora la lista es directamente de tu clase base Contenido
         public List<Contenido> results { get; set; } = new List<Contenido>();
 
-        public void MostrarDatos(Usuario usuario_activo)
+        public void MostrarDatos(int indicePagina, Usuario usuario_activo)
         {
+            // Validamos que realmente hayan llegado películas o series
             if (results == null || results.Count == 0)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
@@ -23,40 +24,25 @@ namespace administrador_contenido
             }
 
             Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine($"=== Mostrando Página {this.page} de {this.total_pages} ===");
-            Console.ResetColor();
+            // PASO CLAVE: Si 'title' viene vacío, es una serie, entonces usamos 'name'
+            string tituloFinal = !string.IsNullOrEmpty(this.results[indicePagina].title) ? this.results[indicePagina].title : this.results[indicePagina].name;
+
+            // Si no hay sinopsis, ponemos un texto por defecto para que no quede en blanco
+            string sinopsisFinal = !string.IsNullOrEmpty(this.results[indicePagina].overview)
+                ? this.results[indicePagina].overview
+                : "Sin sinopsis disponible.";
+
+            // Imprimimos el título destacado en amarillo
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.Write($"• Título: ");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine(tituloFinal);
+
+            // Imprimimos la sinopsis resumida
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.WriteLine($"  Sinopsis: {sinopsisFinal}");
             Console.WriteLine("------------------------------------------------------------------");
-
-            foreach (Contenido item in this.results)
-            {
-                Contenido objetoPolimorfico;
-
-                // Si la API nos devolvió la propiedad 'title', instanciamos tu clase hija real Pelicula
-                if (!string.IsNullOrEmpty(item.title))
-                {
-                    objetoPolimorfico = new Pelicula
-                    {
-                        id = item.id,
-                        title = item.title,
-                        overview = item.overview,
-                        genre_ids = item.genre_ids
-                    };
-                }
-                else // Si no tiene 'title', asumimos que es una Serie real
-                {
-                    objetoPolimorfico = new Serie
-                    {
-                        id = item.id,
-                        name = item.name,
-                        overview = item.overview,
-                        genre_ids = item.genre_ids
-                    };
-                }
-
-                // ¡LLAMADA POLIMÓRFICA EXIGIDA POR LA CÁTEDRA!
-                // C# va a ejecutar el MostrarDatos() que está adentro de Pelicula.cs o Serie.cs
-                objetoPolimorfico.MostrarDatos();
-            }
+            Console.ResetColor();
         }
     }
 }

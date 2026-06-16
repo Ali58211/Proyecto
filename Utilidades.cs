@@ -257,12 +257,19 @@ namespace administrador_contenido
 
         public static async Task Buscar_contenido(string tipo, Usuario usuario_activo)
         {
-            string camb_pag;
             Program.info = new string[1];
 
             while (Program.continuar)
             {
-                Program.cadena = Utilidades.menu(new String[] { $"Buscar {tipo} solo por nombre", $"Buscar {tipo} con filtros", "Atras" });
+                int resultadoActual = 0;
+                int paginaActual = 1;
+
+                Program.cadena = Utilidades.menu(new string[]
+                {
+            $"Buscar {tipo} solo por nombre",
+            $"Buscar {tipo} con filtros",
+            "Atras"
+                });
 
                 if (Program.cadena == "Atras")
                 {
@@ -270,89 +277,150 @@ namespace administrador_contenido
                     break;
                 }
 
-                Program.info = Utilidades.formulario(new String[] { $"Ingrese el nombre de la {tipo} que desea buscar: " });
+                Program.info = Utilidades.formulario(
+                    new string[] { $"Ingrese el nombre de la {tipo} que desea buscar:" });
 
-                if (string.IsNullOrEmpty(Program.info[0])) continue;
+                if (string.IsNullOrWhiteSpace(Program.info[0]))
+                    continue;
 
                 string url_contenido = "";
+
                 if (tipo == "pelicula")
                 {
-                    url_contenido = $"https://api.themoviedb.org/3/search/movie?query={Uri.EscapeDataString(Program.info[0])}&language=es-ES&api_key={Program.apiKey}";
+                    url_contenido =
+                        $"https://api.themoviedb.org/3/search/movie?query={Uri.EscapeDataString(Program.info[0])}&language=es-ES&page=1&api_key={Program.apiKey}";
                 }
-                if (tipo == "serie")
+                else if (tipo == "serie")
                 {
-                    url_contenido = $"https://api.themoviedb.org/3/search/tv?query={Uri.EscapeDataString(Program.info[0])}&language=es-ES&api_key={Program.apiKey}";
+                    url_contenido =
+                        $"https://api.themoviedb.org/3/search/tv?query={Uri.EscapeDataString(Program.info[0])}&language=es-ES&page=1&api_key={Program.apiKey}";
                 }
 
                 try
                 {
                     string json = await Program.client.GetStringAsync(url_contenido);
-                    TotalContenidos respuesta = JsonSerializer.Deserialize<TotalContenidos>(json);
+                    TotalContenidos respuesta =
+                        JsonSerializer.Deserialize<TotalContenidos>(json);
 
-                    if (respuesta.total_results > 20)
+                    if (respuesta == null ||
+                        respuesta.results == null ||
+                        respuesta.total_results == 0)
                     {
-                        int pagina = respuesta.page;
-                        while (Program.continuar)
+                        Console.Clear();
+                        Console.WriteLine("No se encontraron resultados.");
+                        Console.WriteLine("\nPresione una tecla para continuar...");
+                        Console.ReadKey(true);
+                        continue;
+                    }
+
+                    while (true)
+                    {
+                        int indicePagina = resultadoActual % 20;
+
+                        Console.Clear();
+
+                        Console.WriteLine($"Resultado {resultadoActual + 1} de {respuesta.total_results}");
+                        Console.WriteLine(new string('-', 50));
+
+                        respuesta.MostrarDatos(indicePagina, usuario_activo);
+
+                        Console.WriteLine();
+                        Console.WriteLine("[<-] Anterior | [->] Siguiente | [↓] Opciones | [ESC] Salir");
+                        ConsoleKey tecla = Console.ReadKey(true).Key;
+
+                        if (tecla == ConsoleKey.Escape)
                         {
-                            // CORREGIDO: Limpiamos la pantalla ANTES de mostrar los datos nuevos de la página
-                            Console.Clear();
-                            Console.WriteLine($"Total de resultados globales: {respuesta.total_results}\n");
+                            break;
+                        }
 
-                            respuesta.MostrarDatos(usuario_activo);
-
-                            // CORREGIDO TRUCO DE CÁTEDRA: No usamos Utilidades.menu para la paginación porque tiene un Clear() adentro.
-                            // Hacemos un menú rápido in-situ abajo de los datos para que no borre lo impreso.
-                            Console.ForegroundColor = ConsoleColor.Cyan;
-                            Console.WriteLine("\n[ Controles de Navegación ]");
-                            Console.ResetColor();
-                            Console.WriteLine("Presione: [ Flecha Derecha -> Siguiente ]  [ Flecha Izquierda <- Anterior ]  [ Escape -> Volver ]");
-
-                            ConsoleKeyInfo teclaNavegacion = Console.ReadKey(true);
-
-                            if (teclaNavegacion.Key == ConsoleKey.RightArrow)
+                        if (tecla == ConsoleKey.DownArrow)
+                        {
+                            Program.cadena = Utilidades.menu(new string[]
                             {
-                                if (pagina == respuesta.total_pages) pagina = 1;
-                                else pagina++;
+                                "Crear publicacion",
+                                "Salir"
+                            });
 
-                                if (tipo == "pelicula") url_contenido = $"https://api.themoviedb.org/3/search/movie?query={Uri.EscapeDataString(Program.info[0])}&language=es-ES&page={pagina}&api_key={Program.apiKey}";
-                                if (tipo == "serie") url_contenido = $"https://api.themoviedb.org/3/search/tv?query={Uri.EscapeDataString(Program.info[0])}&language=es-ES&page={pagina}&api_key={Program.apiKey}";
+                            switch (Program.cadena)
+                            {
+                                case "Crear publicacion":
+                                    
+                                    break;
 
-                                json = await Program.client.GetStringAsync(url_contenido);
-                                respuesta = JsonSerializer.Deserialize<TotalContenidos>(json);
+                                case "Salir":
+                                    break;
                             }
-                            else if (teclaNavegacion.Key == ConsoleKey.LeftArrow)
+
+                            // Redibuja la película/serie actual al volver del menú
+                            continue;
+                        }
+
+                        if (tecla == ConsoleKey.RightArrow)
+                        {
+                            resultadoActual++;
+
+                            if (resultadoActual >= respuesta.total_results)
                             {
-                                if (pagina == 1) pagina = respuesta.total_pages;
-                                else pagina--;
-
-                                if (tipo == "pelicula") url_contenido = $"https://api.themoviedb.org/3/search/movie?query={Uri.EscapeDataString(Program.info[0])}&language=es-ES&page={pagina}&api_key={Program.apiKey}";
-                                if (tipo == "serie") url_contenido = $"https://api.themoviedb.org/3/search/tv?query={Uri.EscapeDataString(Program.info[0])}&language=es-ES&page={pagina}&api_key={Program.apiKey}";
-
-                                json = await Program.client.GetStringAsync(url_contenido);
-                                respuesta = JsonSerializer.Deserialize<TotalContenidos>(json);
+                                resultadoActual = 0;
                             }
-                            else if (teclaNavegacion.Key == ConsoleKey.Escape)
+                        }
+                        else if (tecla == ConsoleKey.LeftArrow)
+                        {
+                            resultadoActual--;
+
+                            if (resultadoActual < 0)
                             {
-                                Program.continuar = false;
+                                resultadoActual = respuesta.total_results - 1;
+                            }
+                        }
+                        else
+                        {
+                            continue;
+                        }
+
+                        int paginaNecesaria = (resultadoActual / 20) + 1;
+
+                        if (paginaNecesaria != paginaActual)
+                        {
+                            paginaActual = paginaNecesaria;
+
+                            string nuevaUrl;
+
+                            if (tipo == "pelicula")
+                            {
+                                nuevaUrl =
+                                    $"https://api.themoviedb.org/3/search/movie?query={Uri.EscapeDataString(Program.info[0])}&language=es-ES&page={paginaActual}&api_key={Program.apiKey}";
+                            }
+                            else
+                            {
+                                nuevaUrl =
+                                    $"https://api.themoviedb.org/3/search/tv?query={Uri.EscapeDataString(Program.info[0])}&language=es-ES&page={paginaActual}&api_key={Program.apiKey}";
+                            }
+
+                            json = await Program.client.GetStringAsync(nuevaUrl);
+
+                            respuesta = JsonSerializer.Deserialize<TotalContenidos>(json);
+
+                            if (respuesta == null ||
+                                respuesta.results == null ||
+                                respuesta.results.Count == 0)
+                            {
                                 break;
                             }
                         }
-                        Program.continuar = true;
-                    }
-                    else
-                    {
-                        Console.Clear();
-                        respuesta.MostrarDatos(usuario_activo);
-                        Console.WriteLine("\nPresione cualquier tecla para regresar al menú anterior...");
-                        Console.ReadKey();
                     }
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Error al conectar con el servicio de búsqueda: {ex.Message}");
-                    Console.ReadKey();
+                    Console.Clear();
+                    Console.WriteLine($"Error al conectar con el servicio:");
+                    Console.WriteLine(ex.Message);
+                    Console.WriteLine("\nPresione una tecla para continuar...");
+                    Console.ReadKey(true);
                 }
             }
+
+            Program.continuar = true;
         }
         public static void Buscar_usuario()
         {
