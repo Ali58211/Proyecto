@@ -19,7 +19,6 @@ namespace administrador_contenido
             this.name = nm;
         }
 
-        // TU MÉTODO ORIGINAL INTACTO:
         public override void MostrarDatos()
         {
             Console.ForegroundColor = ConsoleColor.Cyan;
