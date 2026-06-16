@@ -31,7 +31,6 @@ namespace administrador_contenido
             {
                 Contenido objetoPolimorfico;
 
-                // PASO CLAVE POLIMÓRFICO: 
                 // Si la API nos devolvió la propiedad 'title', instanciamos tu clase hija real Pelicula
                 if (!string.IsNullOrEmpty(item.title))
                 {
