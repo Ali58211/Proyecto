@@ -1,11 +1,12 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace administrador_contenido
 {
-    internal abstract class Contenido
+    internal class Contenido
     {
+        
         private bool _adult; //indica si la serie o pelicula es para adultos
         private int[] _genre_ids; //lista de IDs de géneros
         private int _id; //ID único de la serie o pelicula en TMDb
@@ -15,28 +16,48 @@ namespace administrador_contenido
         private float _vote_average; //promedio de puntuación
         private int _vote_count; //cantidad de votos recibidos
 
+        // Nuevos atributos privados para respaldar las propiedades de la API
+        private string _title;
+        private string _original_title;
+        private string _release_date;
+        private string _name;
+        private string _original_name;
+        private string _first_air_date;
+
+
         public Contenido()
         {
-            this.adult = false;
-            this.genre_ids = new int[] { };
-            this.id = 0;
-            this.original_language = string.Empty;
-            this.overview = string.Empty;
-            this.popularity = 0;
-            this.vote_average = 0;
-            this.vote_count = 0;
+            // Inicializamos los atributos privados directamente
+            this._adult = false;
+            this._genre_ids = new int[] { };
+            this._id = 0;
+            this._original_language = string.Empty;
+            this._overview = string.Empty;
+            this._popularity = 0;
+            this._vote_average = 0;
+            this._vote_count = 0;
+
+            // Inicializamos los campos nuevos de la API
+            this._title = string.Empty;
+            this._original_title = string.Empty;
+            this._release_date = string.Empty;
+            this._name = string.Empty;
+            this._original_name = string.Empty;
+            this._first_air_date = string.Empty;
         }
 
         public Contenido(bool ad, int[] genID, int i, string origLang, string oview, float popul, float votAver, int votCount)
         {
-            this.adult = ad;
-            this.genre_ids = genID;
-            this.id = i;
-            this.original_language = origLang;
-            this.overview = oview;
-            this.popularity = popul;
-            this.vote_average = votAver;
-            this.vote_count = votCount;
+            // Asignamos directamente a las variables privadas de respaldo (_nombre)
+            // Esto evita cualquier conflicto de nombres con las propiedades o parámetros
+            this._adult = ad;
+            this._genre_ids = genID;
+            this._id = i;
+            this._original_language = origLang;
+            this._overview = oview;
+            this._popularity = popul;
+            this._vote_average = votAver;
+            this._vote_count = votCount;
         }
 
         public bool adult
@@ -87,6 +108,48 @@ namespace administrador_contenido
             set { this._vote_count = value; }
         }
 
-        public abstract void MostrarDatos();
+        // --- Propiedades expandidas específicas para Películas ---
+        public string title
+        {
+            get { return this._title; }
+            set { this._title = value; }
+        }
+
+        public string original_title
+        {
+            get { return this._original_title; }
+            set { this._original_title = value; }
+        }
+
+        public string release_date
+        {
+            get { return this._release_date; }
+            set { this._release_date = value; }
+        }
+
+        // --- Propiedades expandidas específicas para Series ---
+        public string name
+        {
+            get { return this._name; }
+            set { this._name = value; }
+        }
+
+        public string original_name
+        {
+            get { return this._original_name; }
+            set { this._original_name = value; }
+        }
+
+        public string first_air_date
+        {
+            get { return this._first_air_date; }
+            set { this._first_air_date = value; }
+        }
+
+       
+        public virtual void MostrarDatos()
+        {
+            Console.WriteLine("Datos generales del contenido.");
+        }
     }
 }
